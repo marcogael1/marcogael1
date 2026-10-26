@@ -79,21 +79,6 @@ I'm a **backend developer** from México 🇲🇽. I enjoy designing APIs that a
   <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" />
 </p>
 
----
-
-## 🚀 Featured Projects
-
-| Project | Description | Stack |
-|---|---|---|
-| [**pci-backendSQL**](https://github.com/marcogael1/pci-backendSQL) | E-commerce API for PCI Tecnología: JWT auth, email notifications, CodeQL scanning and load testing | NestJS · PostgreSQL · TypeORM |
-| [**frontendPCI**](https://github.com/marcogael1/frontendPCI) | Web store for PCI Tecnología with Firebase integration | Angular · Tailwind · Firebase |
-| [**pci_mobile**](https://github.com/marcogael1/pci_mobile) | Mobile app with product catalog, comparison and secure login | Flutter · Dart |
-| [**PantallasPciWearOs**](https://github.com/marcogael1/PantallasPciWearOs) | Smartwatch companion app for PCI Tecnología | Kotlin · Jetpack Compose |
-| [**skill-PCI-Tecnologia**](https://github.com/marcogael1/skill-PCI-Tecnologia) | Alexa Skill connected to the PCI ecosystem | Alexa · AWS Lambda |
-| [**titanicPCA**](https://github.com/marcogael1/titanicPCA) | Survival prediction model served as a web app | Python · scikit-learn · Flask |
-| [**VacunasUthh**](https://github.com/VacunasUthh) | Vaccination tracking platform (web, client & server) | React · TypeScript |
-
----
 
 ## 📈 GitHub Stats
 
@@ -114,7 +99,3 @@ When I'm not coding, I'm probably gaming 🎮 or listening to music 🎧.
 
 ---
 
-<p align="center">
-  <a href="mailto:marcogael200@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" /></a>
-  <a href="https://marcogael1.github.io"><img src="https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=githubpages&logoColor=white" /></a>
-</p>
