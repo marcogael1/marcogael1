@@ -1,14 +1,14 @@
 """
-Genera assets/commits-por-mes.svg con los commits de los últimos 12 meses.
+Generates assets/commits-por-mes.svg with the commits of the last 12 months.
 
-Usa la API GraphQL de GitHub (contributionsCollection). Con un token personal
-del dueño del perfil incluye las contribuciones privadas (repos de Freepi-Inc).
+Uses the GitHub GraphQL API (contributionsCollection), including private
+contributions when they are enabled on the profile.
 
-Variables de entorno:
-  GH_TOKEN     token personal (scope: read:user, repo)
-  GH_USER      usuario de GitHub (default: marcogael1)
-  OUTPUT       ruta del SVG (default: assets/commits-por-mes.svg)
-  MONTHS       meses a mostrar (default: 12)
+Environment variables:
+  GH_TOKEN     personal token (scope: read:user)
+  GH_USER      GitHub username (default: marcogael1)
+  OUTPUT       SVG path (default: assets/commits-por-mes.svg)
+  MONTHS       months to show (default: 12)
 """
 import json
 import os
@@ -19,9 +19,9 @@ TOKEN = os.environ.get("GH_TOKEN", "")
 USER = os.environ.get("GH_USER", "marcogael1")
 OUTPUT = os.environ.get("OUTPUT", "assets/commits-por-mes.svg")
 MONTHS = int(os.environ.get("MONTHS", "12"))
-MESES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+MESES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-# Colores tokyonight (igual que las demás tarjetas del README)
+# Tokyonight colors (same as the other README cards)
 BG, TITLE, TEXT, MUTED, BAR, BAR_CUR, GRID = (
     "#1a1b27", "#70a5fd", "#a9b1d6", "#565f89", "#38bdae", "#bf91f3", "#24283b"
 )
@@ -52,7 +52,7 @@ def gql(variables):
 
 
 def meses_atras(n):
-    """Lista de (inicio, fin) de los últimos n meses, incluido el actual."""
+    """List of (start, end) for the last n months, including the current one."""
     hoy = date.today()
     y, m = hoy.year, hoy.month
     rangos = []
@@ -73,7 +73,7 @@ def obtener_datos():
             "from": f"{inicio}T00:00:00Z",
             "to": f"{fin}T23:59:59Z",
         })
-        # restrictedContributionsCount = contribuciones privadas (sin detalle por tipo)
+        # restrictedContributionsCount = private contributions (no breakdown by type)
         datos.append((inicio, c["totalCommitContributions"] + c["restrictedContributionsCount"]))
     return datos
 
@@ -83,7 +83,7 @@ def svg(datos):
     left, right, top, bottom = 50, 20, 115, 50
     cw, ch = W - left - right, H - top - bottom
     maximo = max((v for _, v in datos), default=0) or 1
-    # Escala con pasos redondos (1, 2, 5 × 10^n)
+    # Axis scale with round steps (1, 2, 5 x 10^n)
     crudo = maximo / 4
     base = 10 ** max(0, len(str(int(crudo))) - 1)
     paso = next(m * base for m in (1, 2, 2.5, 5, 10) if m * base >= crudo)
@@ -100,60 +100,13 @@ def svg(datos):
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
         f'font-family="Segoe UI, Ubuntu, sans-serif">',
         f'<rect width="{W}" height="{H}" rx="6" fill="{BG}"/>',
-        f'<text x="25" y="35" fill="{TITLE}" font-size="18" font-weight="600">Commits por mes</text>',
-        f'<text x="{W - 25}" y="35" fill="{MUTED}" font-size="12" text-anchor="end">últimos {len(datos)} meses</text>',
+        f'<text x="25" y="35" fill="{TITLE}" font-size="18" font-weight="600">Monthly commits</text>',
+        f'<text x="{W - 25}" y="35" fill="{MUTED}" font-size="12" text-anchor="end">last {len(datos)} months</text>',
     ]
 
-    # Resumen
+    # Summary
     resumen = [
         ("Total", f"{total:,}"),
-        (f"En {anio}", f"{este_anio:,}"),
-        ("Promedio / mes", f"{promedio:,}"),
-        ("Mejor mes", f"{MESES[mejor[0].month - 1]} {mejor[0].year} · {mejor[1]:,}"),
-    ]
-    x = 25
-    for etiqueta, valor in resumen:
-        out.append(f'<text x="{x}" y="62" fill="{MUTED}" font-size="11">{etiqueta}</text>')
-        out.append(f'<text x="{x}" y="80" fill="{TEXT}" font-size="15" font-weight="600">{valor}</text>')
-        x += 140 if etiqueta != "Promedio / mes" else 150
-
-    # Grid
-    for i in range(5):
-        val = round(tope * i / 4)
-        y = top + ch - ch * i / 4
-        out.append(f'<line x1="{left}" y1="{y:.1f}" x2="{W - right}" y2="{y:.1f}" stroke="{GRID}"/>')
-        out.append(f'<text x="{left - 8}" y="{y + 4:.1f}" fill="{MUTED}" font-size="10" text-anchor="end">{val}</text>')
-
-    # Barras
-    slot = cw / len(datos)
-    bw = min(40, slot * 0.6)
-    for i, (d, v) in enumerate(datos):
-        h = ch * v / tope
-        bx = left + slot * i + (slot - bw) / 2
-        by = top + ch - h
-        color = BAR_CUR if i == len(datos) - 1 else BAR
-        out.append(f'<rect x="{bx:.1f}" y="{by:.1f}" width="{bw:.1f}" height="{max(h, 0):.1f}" rx="3" fill="{color}">'
-                   f'<title>{MESES[d.month - 1]} {d.year}: {v} commits</title></rect>')
-        if v:
-            out.append(f'<text x="{bx + bw / 2:.1f}" y="{by - 5:.1f}" fill="{TEXT}" font-size="10" text-anchor="middle">{v}</text>')
-        etiqueta = MESES[d.month - 1] + (f" {str(d.year)[2:]}" if d.month == 1 or i == 0 else "")
-        out.append(f'<text x="{bx + bw / 2:.1f}" y="{top + ch + 18}" fill="{MUTED}" font-size="11" text-anchor="middle">{etiqueta}</text>')
-
-    act = datetime.now(timezone.utc).strftime("%d/%m/%Y")
-    out.append(f'<text x="{W - 25}" y="{H - 12}" fill="{MUTED}" font-size="10" text-anchor="end">Actualizado {act}</text>')
-    out.append("</svg>")
-    return "\n".join(out)
-
-
-if __name__ == "__main__":
-    if os.environ.get("DEMO"):
-        import random
-        datos = [(ini, random.randint(20, 160)) for ini, _ in meses_atras(MONTHS)]
-    else:
-        if not TOKEN:
-            raise SystemExit("Falta GH_TOKEN")
-        datos = obtener_datos()
-    os.makedirs(os.path.dirname(OUTPUT) or ".", exist_ok=True)
-    with open(OUTPUT, "w", encoding="utf-8") as f:
-        f.write(svg(datos))
-    print(f"OK -> {OUTPUT}: {sum(v for _, v in datos)} commits en {len(datos)} meses")
+        (f"In {anio}", f"{este_anio:,}"),
+        ("Avg / month", f"{promedio:,}"),
+        ("Best month", f"{MESES[mejor[0].month - 1]} {mejor[0].year} ·
