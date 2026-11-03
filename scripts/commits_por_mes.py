@@ -110,3 +110,4 @@ def svg(datos):
         (f"In {anio}", f"{este_anio:,}"),
         ("Avg / month", f"{promedio:,}"),
         ("Best month", f"{MESES[mejor[0].month - 1]} {mejor[0].year} - {mejor[1]:,}"),
+    ]
