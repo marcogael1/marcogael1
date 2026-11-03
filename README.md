@@ -91,13 +91,11 @@ I'm a **backend developer** from México 🇲🇽. I enjoy designing APIs that a
   <img src="https://streak-stats.demolab.com?user=marcogael1&theme=tokyonight&hide_border=true" />
 </p>
 
-### 📅 Commits por mes
 
 <p align="center">
   <img width="100%" src="./assets/commits-por-mes.svg" alt="Commits por mes" />
 </p>
 
-### 📊 Actividad de los últimos 30 días
 
 <p align="center">
   <img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=marcogael1&theme=tokyo-night&hide_border=true&area=true" alt="Activity graph" />
