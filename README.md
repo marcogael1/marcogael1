@@ -83,12 +83,24 @@ I'm a **backend developer** from México 🇲🇽. I enjoy designing APIs that a
 ## 📈 GitHub Stats
 
 <p align="center">
-  <img height="165" src="https://github-readme-stats.vercel.app/api?username=marcogael1&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" />
+  <img height="165" src="https://github-readme-stats.vercel.app/api?username=marcogael1&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&include_all_commits=true" />
   <img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=marcogael1&layout=compact&theme=tokyonight&hide_border=true" />
 </p>
 
 <p align="center">
   <img src="https://streak-stats.demolab.com?user=marcogael1&theme=tokyonight&hide_border=true" />
+</p>
+
+### 📅 Commits por mes
+
+<p align="center">
+  <img width="100%" src="./assets/commits-por-mes.svg" alt="Commits por mes" />
+</p>
+
+### 📊 Actividad de los últimos 30 días
+
+<p align="center">
+  <img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=marcogael1&theme=tokyo-night&hide_border=true&area=true" alt="Activity graph" />
 </p>
 
 ---
