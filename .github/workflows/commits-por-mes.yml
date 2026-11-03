@@ -1,40 +1,40 @@
-name: Commits por mes
+   name: Monthly commits
 
-on:
-  schedule:
-    - cron: "17 6 * * *"   # diario, 00:17 hora de México
-  workflow_dispatch:        # botón "Run workflow" para correrlo a mano
+   on:
+     schedule:
+       - cron: "17 6 * * *"   # daily, 00:17 Mexico City time
+     workflow_dispatch:        # "Run workflow" button to run it manually
 
-permissions:
-  contents: write
+   permissions:
+     contents: write
 
-concurrency:                # nunca dos runs al mismo tiempo
-  group: commits-por-mes
-  cancel-in-progress: false
+   concurrency:                # never two runs at the same time
+     group: commits-por-mes
+     cancel-in-progress: false
 
-jobs:
-  update:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+   jobs:
+     update:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+         - uses: actions/setup-python@v5
+           with:
+             python-version: "3.12"
 
-      - name: Generar gráfica
-        env:
-          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
-          GH_USER: ${{ github.repository_owner }}
-        run: python scripts/commits_por_mes.py
+         - name: Generate chart
+           env:
+             GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+             GH_USER: ${{ github.repository_owner }}
+           run: python scripts/commits_por_mes.py
 
-      - name: Commit si cambió
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/commits-por-mes.svg
-          git diff --cached --quiet && exit 0
-          git commit -m "chore: update monthly commits chart"
-          # Trae lo nuevo de main antes de subir; si choca la gráfica, gana la recién generada
-          git pull --rebase -X theirs origin main
-          git push
+         - name: Commit if changed
+           run: |
+             git config user.name "github-actions[bot]"
+             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+             git add assets/commits-por-mes.svg
+             git diff --cached --quiet && exit 0
+             git commit -m "chore: update monthly commits chart"
+             # Pull latest main before pushing; on conflict keep the freshly generated chart
+             git pull --rebase -X theirs origin main
+             git push
