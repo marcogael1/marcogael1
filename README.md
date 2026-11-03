@@ -93,8 +93,9 @@ I'm a **backend developer** from México 🇲🇽. I enjoy designing APIs that a
 
 
 <p align="center">
-  <img width="100%" src="./assets/commits-por-mes.svg" alt="Commits por mes" />
+  <img width="100%" src="./assets/commits-por-mes.svg" alt="Monthly commits" />
 </p>
+
 
 
 <p align="center">
